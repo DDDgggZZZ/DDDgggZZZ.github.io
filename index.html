@@ -126,17 +126,21 @@
     align-items: center;
   }
   @media (max-width: 980px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-    .hero-right { order: -1; max-width: 260px; margin: 0 auto; }
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero-right { order: -1; max-width: 220px; margin: 0 auto; text-align: center; }
+    .hero h1 { display: none; }
+    .contact-chips { justify-content: center; }
+    .portrait { max-width: 160px; margin: 0 auto; }
   }
   @media (max-width: 480px) {
-    .hero { padding: 100px 0 60px; }
+    .hero { padding: 90px 0 50px; }
     .hero h1 { font-size: clamp(42px, 12vw, 54px); }
-    .hero-sub { font-size: 18px; }
-    .hero-cta { margin-top: 40px; gap: 16px; }
-    .btn { padding: 12px 18px; font-size: 11px; }
-    .contact-chips { margin-top: 24px; }
+    .hero-sub { font-size: 17px; margin-top: 16px; }
+    .hero-cta { margin-top: 32px; gap: 12px; }
+    .btn { padding: 11px 16px; font-size: 11px; }
+    .contact-chips { margin-top: 16px; }
     .chip { padding: 6px 10px; font-size: 10px; }
+    .hero-name-mobile { font-size: clamp(32px, 10vw, 44px); }
   }
   .hero-right {
     display: flex;
@@ -1043,6 +1047,49 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Mobile-only name display (below portrait) */
+  .hero-name-mobile {
+    display: none;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 10vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 14px 0 6px;
+  }
+  .hero-name-mobile .cn {
+    color: var(--amber);
+    font-style: italic;
+  }
+  @media (max-width: 980px) {
+    .hero-name-mobile { display: block; }
+  }
+
+  /* Global mobile improvements */
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+    nav { padding: 14px 20px; }
+    section { padding: 72px 0; }
+    .section-title { font-size: clamp(26px, 7vw, 40px); margin-bottom: 36px; }
+    .hero-meta { font-size: 10px; gap: 14px; margin-bottom: 20px; }
+    .hero-sub { font-size: 16px; max-width: 100%; }
+    .about-prose p { font-size: 18px; }
+    .about-prose p + p { font-size: 15px; }
+    .pub-title { font-size: 18px; }
+    .project { padding: 24px 18px; }
+    .project h3 { font-size: 21px; }
+    .contact h2 { font-size: clamp(34px, 9vw, 56px); }
+    .contact p { font-size: 17px; margin-bottom: 32px; }
+    .pull-quote { margin: 56px 0; padding: 48px 0; }
+    .pull-quote blockquote { font-size: clamp(20px, 5.5vw, 30px); }
+    .stat-num { font-size: 34px; }
+    .stat { padding: 20px 16px; }
+    .beyond-card h4 { font-size: 22px; }
+    .beyond-card p { font-size: 14px; }
+    .award-name { font-size: 16px; }
+    .lab-intro { font-size: 15px; }
+  }
 </style>
 </head>
 <body>
@@ -1089,6 +1136,7 @@
           <img src="my_photo.jpg" alt="Deng Guangze · portrait">
           <figcaption><em>Portrait</em><span>Changsha · 2025</span></figcaption>
         </figure>
+        <div class="hero-name-mobile">Deng<br><span class="cn">Guangze</span></div>
         <div class="contact-chips">
           <a href="mailto:2908251804@qq.com" class="chip">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -1110,6 +1158,7 @@
         <div class="signal-widget">
           <canvas id="signal-canvas"></canvas>
           <div class="signal-meta">
+            <span class="live">Daily Rhythm</span>
             <span class="signal-value" id="signal-value">—</span>
           </div>
         </div>
@@ -1471,14 +1520,17 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // === Signal widget (hero): animated time-series waveform ===
-  (function signalWidget(){
+  // === Daily Rhythm widget: 24-hour activity curve with live time cursor ===
+  // Shows where "now" (CST) sits on a typical daily activity pattern —
+  // a real-time slice of the same time-series research this page is about.
+  (function dailyRhythm(){
     const canvas = document.getElementById('signal-canvas');
     if (!canvas) return;
     const valueEl = document.getElementById('signal-value');
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     let W, H;
+
     function resize(){
       const r = canvas.getBoundingClientRect();
       W = r.width; H = r.height;
@@ -1488,51 +1540,113 @@
     resize();
     window.addEventListener('resize', resize);
 
-    const amber = getComputedStyle(document.documentElement).getPropertyValue('--amber').trim() || '#a86a22';
-    const faint = getComputedStyle(document.documentElement).getPropertyValue('--line').trim() || '#e6dfd2';
+    const css = getComputedStyle(document.documentElement);
+    const amber = css.getPropertyValue('--amber').trim() || '#a86a22';
+    const line  = css.getPropertyValue('--line').trim()  || '#e6dfd2';
+    const faint = css.getPropertyValue('--ink-faint').trim() || '#9a8f80';
 
-    let t = 0;
+    // Typical 24-hour activity curve (same pattern as Lab section — hourly rhythm)
+    const rhythm = [0.12,0.08,0.06,0.05,0.08,0.18,0.38,0.72,0.88,0.70,0.58,0.62,
+                    0.68,0.65,0.60,0.66,0.78,0.92,0.72,0.52,0.40,0.30,0.22,0.15];
+
+    function lerp(a, b, t){ return a + (b - a) * t; }
+
+    function activityAt(hf){
+      const h = Math.floor(hf) % 24;
+      return lerp(rhythm[h], rhythm[(h + 1) % 24], hf - Math.floor(hf));
+    }
+
+    function toPx(hf, v){
+      const px = 6, py = 10;
+      const x = px + (hf / 24) * (W - px * 2);
+      const y = py + (1 - v) * (H - py * 2);
+      return [x, y];
+    }
+
+    function nowFrac(){
+      const n = new Date();
+      return n.getHours() + n.getMinutes() / 60 + n.getSeconds() / 3600;
+    }
+
     function frame(){
       ctx.clearRect(0, 0, W, H);
-      // baseline grid
-      ctx.strokeStyle = faint;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      for (let y = 0; y <= H; y += H/4) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
-      ctx.stroke();
+      const px = 6, py = 10;
 
-      // waveform
-      ctx.strokeStyle = amber;
-      ctx.lineWidth = 1.6;
+      // Filled area under curve
+      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, 'rgba(168,106,34,0.16)');
+      grad.addColorStop(1, 'rgba(168,106,34,0.01)');
+      ctx.fillStyle = grad;
       ctx.beginPath();
-      const N = 120;
-      let latest = 0;
-      for (let i = 0; i < N; i++) {
-        const x = (i / (N - 1)) * W;
-        const phase = t + i * 0.12;
-        const y = H/2
-          + Math.sin(phase) * H * 0.22
-          + Math.sin(phase * 2.3 + 1.4) * H * 0.08
-          + Math.sin(phase * 0.4) * H * 0.06;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        if (i === N - 1) latest = (H/2 - y) / (H/2);
+      ctx.moveTo(px, H - py);
+      for (let i = 0; i <= 300; i++){
+        const hf = i / 300 * 24;
+        const [x, y] = toPx(hf, activityAt(hf));
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(W - px, H - py);
+      ctx.closePath();
+      ctx.fill();
+
+      // Curve line
+      ctx.strokeStyle = amber;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.55;
+      ctx.beginPath();
+      for (let i = 0; i <= 300; i++){
+        const hf = i / 300 * 24;
+        const [x, y] = toPx(hf, activityAt(hf));
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // Past portion: brighter line up to current time
+      const nf = nowFrac();
+      ctx.strokeStyle = amber;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      const steps = Math.ceil(nf / 24 * 300);
+      for (let i = 0; i <= steps; i++){
+        const hf = i / 300 * 24;
+        const [x, y] = toPx(hf, activityAt(hf));
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.stroke();
 
-      // trailing dot
-      const lastPhase = t + (N - 1) * 0.12;
-      const lastY = H/2
-        + Math.sin(lastPhase) * H * 0.22
-        + Math.sin(lastPhase * 2.3 + 1.4) * H * 0.08
-        + Math.sin(lastPhase * 0.4) * H * 0.06;
-      ctx.fillStyle = amber;
+      // Vertical cursor at current time
+      const [cx, cy] = toPx(nf, activityAt(nf));
+      ctx.strokeStyle = amber;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.3;
+      ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.arc(W - 2, lastY, 2.5, 0, Math.PI * 2);
+      ctx.moveTo(cx, py); ctx.lineTo(cx, H - py);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+
+      // Glow halo
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 12);
+      grd.addColorStop(0, 'rgba(168,106,34,0.35)');
+      grd.addColorStop(1, 'rgba(168,106,34,0)');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 12, 0, Math.PI * 2);
       ctx.fill();
 
-      if (valueEl) valueEl.textContent = (latest >= 0 ? '+' : '') + latest.toFixed(3);
+      // Live dot
+      ctx.fillStyle = amber;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fill();
 
-      t += 0.04;
+      // Current time label
+      const n = new Date();
+      const hh = String(n.getHours()).padStart(2, '0');
+      const mm = String(n.getMinutes()).padStart(2, '0');
+      if (valueEl) valueEl.textContent = hh + ':' + mm + ' CST';
+
       requestAnimationFrame(frame);
     }
     frame();
