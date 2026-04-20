@@ -127,7 +127,16 @@
   }
   @media (max-width: 980px) {
     .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-    .hero-right { order: -1; max-width: 340px; }
+    .hero-right { order: -1; max-width: 260px; margin: 0 auto; }
+  }
+  @media (max-width: 480px) {
+    .hero { padding: 100px 0 60px; }
+    .hero h1 { font-size: clamp(42px, 12vw, 54px); }
+    .hero-sub { font-size: 18px; }
+    .hero-cta { margin-top: 40px; gap: 16px; }
+    .btn { padding: 12px 18px; font-size: 11px; }
+    .contact-chips { margin-top: 24px; }
+    .chip { padding: 6px 10px; font-size: 10px; }
   }
   .hero-right {
     display: flex;
@@ -364,6 +373,7 @@
     background: var(--paper);
     padding: 10px 10px 0;
     box-shadow: 0 20px 40px -24px rgba(60,40,10,0.18);
+    max-width: 260px;
   }
   .portrait img {
     display: block;
@@ -1073,6 +1083,12 @@
           </a>
           <a href="#lab" class="btn">Try the demo</a>
         </div>
+      </div>
+      <div class="hero-right">
+        <figure class="portrait">
+          <img src="my_photo.jpg" alt="Deng Guangze · portrait">
+          <figcaption><em>Portrait</em><span>Changsha · 2025</span></figcaption>
+        </figure>
         <div class="contact-chips">
           <a href="mailto:2908251804@qq.com" class="chip">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -1091,16 +1107,9 @@
             Changsha · CN
           </span>
         </div>
-      </div>
-      <div class="hero-right">
-        <figure class="portrait">
-          <img src="my_photo.jpg" alt="Deng Guangze · portrait">
-          <figcaption><em>Portrait</em><span>Changsha · 2025</span></figcaption>
-        </figure>
         <div class="signal-widget">
           <canvas id="signal-canvas"></canvas>
           <div class="signal-meta">
-            <span class="live">Live · time-series</span>
             <span class="signal-value" id="signal-value">—</span>
           </div>
         </div>
