@@ -505,79 +505,247 @@
     align-self: start;
   }
 
-  /* LAB — interactive augmentation demo */
+  /* LAB — TimeShaper mini-demo */
+  .lab-intro {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--ink-dim);
+    max-width: 820px;
+    margin: -40px 0 40px;
+  }
+  .lab-intro strong {
+    color: var(--ink);
+    font-weight: 500;
+    font-style: italic;
+  }
   .lab {
     display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 40px;
+    grid-template-columns: 1fr 340px;
+    gap: 28px;
     border: 1px solid var(--line);
     background: var(--paper);
-    padding: 28px;
+    padding: 32px 28px 28px;
     position: relative;
+    box-shadow: 0 24px 48px -30px rgba(60,40,10,0.18);
   }
-  @media (max-width: 820px) {
-    .lab { grid-template-columns: 1fr; padding: 20px; gap: 24px; }
+  .lab::before {
+    content: 'TimeShaper · live demo';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
   }
+  @media (max-width: 900px) {
+    .lab { grid-template-columns: 1fr; padding: 28px 18px 18px; gap: 22px; }
+    .lab-intro { margin: -16px 0 32px; font-size: 17px; }
+  }
+
+  .lab-viz {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+  .fact-strip {
+    display: flex;
+    gap: 3px;
+    height: 20px;
+  }
+  .fact-chip {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink-dim);
+  }
+  .fact-chip.A { background: #b38a4a; flex: 2.2; }
+  .fact-chip.T { background: #8a6a4a; flex: 1.6; }
+  .fact-chip.E { background: #a84d2a; flex: 0.9; }
+  .fact-chip.R { background: #5c6a3e; flex: 1.8; }
+  .fact-chip.D { background: #7a6b8a; flex: 1.2; }
+
   .lab-canvas {
     position: relative;
     border: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(168,106,34,0.02), transparent);
+    background:
+      linear-gradient(180deg, rgba(168,106,34,0.035), transparent 60%),
+      repeating-linear-gradient(90deg, transparent 0 23px, rgba(168,106,34,0.04) 23px 24px);
   }
   .lab-canvas canvas {
     display: block;
     width: 100%;
-    height: 320px;
+    height: 300px;
   }
   .lab-legend {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 10px;
+    right: 14px;
     display: flex;
-    gap: 14px;
+    gap: 16px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-faint);
   }
   .lab-legend span::before {
     content: '—';
-    margin-right: 4px;
+    margin-right: 5px;
     font-weight: 700;
   }
   .lab-legend .orig::before { color: var(--ink-dim); }
-  .lab-legend .aug::before { color: var(--amber); }
+  .lab-legend .gen::before  { color: var(--amber); }
+  .lab-legend .vio::before  { color: var(--copper); content: '●'; font-size: 8px; }
+
+  .lab-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .metric {
+    padding: 14px 18px;
+    background: var(--paper);
+  }
+  .metric-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .metric-value {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    transition: color 0.4s;
+  }
+  .metric-value.good { color: var(--green); }
+  .metric-value.bad  { color: var(--copper); }
+  .metric-delta {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* Controls side */
   .lab-controls {
     display: flex;
     flex-direction: column;
-    gap: 22px;
-    justify-content: center;
+    gap: 12px;
   }
-  .lab-controls label {
-    display: block;
+  .ctrl-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--ink-dim);
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 2px;
   }
-  .lab-controls .row {
+  .constraint-list {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    flex-direction: column;
+    gap: 8px;
   }
-  .lab-controls output {
+  .constraint-toggle {
+    display: flex;
+    gap: 12px;
+    padding: 13px 15px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.2s;
+    align-items: flex-start;
+    position: relative;
+  }
+  .constraint-toggle:hover { border-color: var(--amber); }
+  .constraint-toggle input {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--ink-faint);
+    background: var(--paper);
+    flex-shrink: 0;
+    margin-top: 3px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .constraint-toggle input:checked {
+    background: var(--amber);
+    border-color: var(--amber);
+  }
+  .constraint-toggle input:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--paper);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .constraint-toggle:has(input:checked) {
+    border-color: var(--amber);
+    background: rgba(168,106,34,0.05);
+  }
+  .ct-body { flex: 1; min-width: 0; }
+  .ct-type {
     font-family: 'JetBrains Mono', monospace;
-    color: var(--amber);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 4px;
+    transition: color 0.2s;
+  }
+  .constraint-toggle:has(input:checked) .ct-type { color: var(--amber); }
+  .ct-text {
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .ct-text code {
+    font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
+    background: rgba(168,106,34,0.1);
+    padding: 1px 6px;
+    color: var(--amber);
   }
-  .lab-controls input[type=range] {
-    width: 100%;
-    margin-top: 10px;
-    accent-color: var(--amber);
+
+  .lab-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
   }
-  .lab-controls button {
-    padding: 10px 16px;
+  .lab-actions button {
+    flex: 1;
+    padding: 11px 12px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.1em;
@@ -588,13 +756,25 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .lab-controls button:hover { border-color: var(--amber); color: var(--amber); }
+  .lab-actions button:hover { border-color: var(--amber); color: var(--amber); }
+  .lab-actions button.primary {
+    background: var(--amber);
+    color: var(--bg);
+    border-color: var(--amber);
+  }
+  .lab-actions button.primary:hover {
+    background: var(--amber-bright);
+    border-color: var(--amber-bright);
+    color: var(--bg);
+  }
   .lab-hint {
     font-family: 'Fraunces', serif;
     font-style: italic;
     font-size: 13px;
     color: var(--ink-faint);
     line-height: 1.55;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
     margin-top: 4px;
   }
 
@@ -991,36 +1171,85 @@
     </div>
   </section>
 
-  <!-- LAB · interactive demo -->
+  <!-- LAB · TimeShaper interactive demo -->
   <section id="lab" class="reveal">
     <div class="section-label">03 — Lab</div>
-    <h2 class="section-title">A tiny live demo of <em>time-series augmentation</em>.</h2>
+    <h2 class="section-title">Shape the signal with <em>data-fact constraints</em>.</h2>
+    <p class="lab-intro">
+      A miniature of the <strong>TimeShaper</strong> workflow from my paper. Automatic
+      generation of hourly traffic-volume samples misbehaves in three predictable ways —
+      out-of-scope values, flipped day/night rank, and spurious extremes. Toggle the
+      data-fact constraints and watch both the curve and the violation metrics fall into line.
+    </p>
     <div class="lab">
-      <div class="lab-canvas">
-        <div class="lab-legend">
-          <span class="orig">original</span>
-          <span class="aug">augmented</span>
+      <div class="lab-viz">
+        <div class="fact-strip" aria-hidden="true" title="Representative data facts extracted from the sample">
+          <span class="fact-chip A">A</span>
+          <span class="fact-chip R">R</span>
+          <span class="fact-chip T">T</span>
+          <span class="fact-chip A">A</span>
+          <span class="fact-chip E">E</span>
+          <span class="fact-chip A">A</span>
+          <span class="fact-chip T">T</span>
+          <span class="fact-chip D">D</span>
+          <span class="fact-chip A">A</span>
         </div>
-        <canvas id="aug-canvas"></canvas>
+        <div class="lab-canvas">
+          <div class="lab-legend">
+            <span class="orig">Original</span>
+            <span class="gen">Generated</span>
+            <span class="vio">Violation</span>
+          </div>
+          <canvas id="aug-canvas"></canvas>
+        </div>
+        <div class="lab-metrics">
+          <div class="metric">
+            <span class="metric-label">Out-of-scope</span>
+            <div class="metric-value bad" id="m-oos">—</div>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Rank violation</span>
+            <div class="metric-value bad" id="m-rank">—</div>
+          </div>
+          <div class="metric">
+            <span class="metric-label">J-FTSD<span class="metric-delta">lower is better</span></span>
+            <div class="metric-value bad" id="m-dist">—</div>
+          </div>
+        </div>
       </div>
       <div class="lab-controls">
-        <label>
-          <div class="row"><span>Noise σ</span><output id="sigma-out">0.20</output></div>
-          <input type="range" id="sigma" min="0" max="100" value="20">
-        </label>
-        <label>
-          <div class="row"><span>Warp τ</span><output id="tau-out">0.15</output></div>
-          <input type="range" id="tau" min="0" max="100" value="15">
-        </label>
-        <label>
-          <div class="row"><span>Smooth</span><output id="smooth-out">0.30</output></div>
-          <input type="range" id="smooth" min="0" max="100" value="30">
-        </label>
-        <button id="resample" type="button">↻ Resample</button>
+        <div class="ctrl-label">Apply constraints</div>
+        <div class="constraint-list">
+          <label class="constraint-toggle">
+            <input type="checkbox" id="c-agg">
+            <div class="ct-body">
+              <span class="ct-type">Aggregation</span>
+              <span class="ct-text">All values must fall in <code>[0, 1]</code>.</span>
+            </div>
+          </label>
+          <label class="constraint-toggle">
+            <input type="checkbox" id="c-rank">
+            <div class="ct-body">
+              <span class="ct-type">Rank</span>
+              <span class="ct-text">Daytime volume <code>&gt;</code> nighttime volume.</span>
+            </div>
+          </label>
+          <label class="constraint-toggle">
+            <input type="checkbox" id="c-ext">
+            <div class="ct-body">
+              <span class="ct-type">Extreme</span>
+              <span class="ct-text">Dampen point-wise outliers.</span>
+            </div>
+          </label>
+        </div>
+        <div class="lab-actions">
+          <button id="resample" type="button">↻ Resample</button>
+          <button id="apply-all" class="primary" type="button">Apply all</button>
+        </div>
         <p class="lab-hint">
-          Drag the sliders — each stroke is a new sample from a conditional noise +
-          warp process on top of the original signal. A small taste of what the
-          paper tackles at scale.
+          Each tick on the x-axis is an hour. Red-ringed points sit outside the
+          expected scope. Enabling a constraint rewrites the generated series and
+          updates the violation ratio — the inner loop of the paper, on one sample.
         </p>
       </div>
     </div>
@@ -1300,128 +1529,234 @@
     frame();
   })();
 
-  // === Lab: interactive time-series augmentation ===
-  (function augLab(){
+  // === Lab: TimeShaper demo — data-fact constraints on hourly traffic volume ===
+  (function timeShaperLab(){
     const canvas = document.getElementById('aug-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     let W, H;
-    function resize(){
+
+    const css = getComputedStyle(document.documentElement);
+    const amber  = css.getPropertyValue('--amber').trim()      || '#a86a22';
+    const dim    = css.getPropertyValue('--ink-dim').trim()    || '#5a5048';
+    const faint  = css.getPropertyValue('--ink-faint').trim()  || '#9a8f80';
+    const line   = css.getPropertyValue('--line').trim()       || '#e6dfd2';
+    const copper = css.getPropertyValue('--copper').trim()     || '#a84d2a';
+
+    // Hand-crafted hourly traffic pattern, normalized to ~[0,1]
+    const base = [0.12,0.08,0.06,0.05,0.08,0.18,0.38,0.72,0.88,0.70,0.58,0.62,
+                  0.68,0.65,0.60,0.66,0.78,0.92,0.72,0.52,0.40,0.30,0.22,0.15];
+    const N = base.length;
+    const isNight = i => i < 6 || i > 20;
+    const isDay   = i => i >= 7 && i <= 18;
+
+    // "Unconstrained" generated sample — noisy, night-inflated, occasionally spiky.
+    let raw;
+    function regen() {
+      raw = base.map((v, i) => {
+        let out = v + (Math.random() - 0.5) * 0.28;
+        if (isNight(i))        out += 0.22 + Math.random() * 0.22;   // flips rank
+        if (i >= 9 && i <= 16) out -= Math.random() * 0.18;          // daytime dip
+        if (Math.random() < 0.07) out += (Math.random() - 0.3) * 1.5; // extreme
+        return out;
+      });
+    }
+    regen();
+
+    const cAgg  = document.getElementById('c-agg');
+    const cRank = document.getElementById('c-rank');
+    const cExt  = document.getElementById('c-ext');
+    const btnResample = document.getElementById('resample');
+    const btnAll      = document.getElementById('apply-all');
+    const mOOS  = document.getElementById('m-oos');
+    const mRank = document.getElementById('m-rank');
+    const mDist = document.getElementById('m-dist');
+
+    function applyConstraints() {
+      let g = raw.slice();
+
+      // Extreme: damp point-wise outliers toward neighbor average
+      if (cExt.checked) {
+        for (let i = 0; i < N; i++) {
+          const prev = g[(i - 1 + N) % N];
+          const next = g[(i + 1) % N];
+          const avg = (prev + next) / 2;
+          if (Math.abs(g[i] - avg) > 0.32) g[i] = avg + (g[i] - avg) * 0.25;
+        }
+      }
+      // Rank: push night below a cap, day above a floor
+      if (cRank.checked) {
+        for (let i = 0; i < N; i++) {
+          if (isNight(i)) {
+            const cap = 0.28 + Math.random() * 0.05;
+            if (g[i] > cap) g[i] = cap - (g[i] - cap) * 0.3 + (Math.random() - 0.5) * 0.04;
+          } else if (isDay(i)) {
+            const floor = 0.45 + Math.random() * 0.08;
+            if (g[i] < floor) g[i] = floor + (floor - g[i]) * 0.3 + (Math.random() - 0.5) * 0.04;
+          }
+        }
+      }
+      // Aggregation: clamp to [0,1]
+      if (cAgg.checked) g = g.map(v => Math.max(0, Math.min(1, v)));
+      return g;
+    }
+
+    function computeMetrics(gen) {
+      const oos = gen.filter(v => v < 0 || v > 1).length / N * 100;
+      const nightMax = Math.max(...gen.slice(0, 6), ...gen.slice(21));
+      const day = gen.slice(7, 19);
+      const rankViol = day.filter(v => v < nightMax).length / day.length * 100;
+      let sse = 0;
+      for (let i = 0; i < N; i++) sse += (gen[i] - base[i]) ** 2;
+      const dist = Math.sqrt(sse / N);
+      return { oos, rank: rankViol, dist };
+    }
+
+    // Plot helpers
+    const padX = 40, padY = 26;
+    const yMin = -0.35, yMax = 1.35;
+    function toPx(i, v) {
+      const plotW = W - padX - 18;
+      const plotH = H - padY * 2;
+      const x = padX + (i / (N - 1)) * plotW;
+      const y = padY + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+      return [x, y];
+    }
+
+    function drawGrid() {
+      const plotW = W - padX - 18;
+      const plotH = H - padY * 2;
+      ctx.strokeStyle = line;
+      ctx.lineWidth = 1;
+      // solid lines at 0 and 1
+      ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      [0, 1].forEach(v => {
+        const y = padY + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+        ctx.moveTo(padX, y); ctx.lineTo(W - 18, y);
+      });
+      ctx.stroke();
+      // dashed midline
+      ctx.setLineDash([2, 4]);
+      ctx.globalAlpha = 0.4;
+      ctx.beginPath();
+      {
+        const y = padY + plotH - ((0.5 - yMin) / (yMax - yMin)) * plotH;
+        ctx.moveTo(padX, y); ctx.lineTo(W - 18, y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+
+      // Day/night band
+      ctx.fillStyle = 'rgba(168,106,34,0.04)';
+      const [x1] = toPx(7, 0);
+      const [x2] = toPx(18, 0);
+      ctx.fillRect(x1, padY, x2 - x1, plotH);
+
+      // Labels
+      ctx.fillStyle = faint;
+      ctx.font = "10px 'JetBrains Mono', monospace";
+      [[0, '0'], [1, '1']].forEach(([v, t]) => {
+        const y = padY + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+        ctx.fillText(t, padX - 14, y + 3);
+      });
+      [0, 6, 12, 18, 23].forEach(h => {
+        const x = padX + (h / (N - 1)) * plotW;
+        const lbl = String(h).padStart(2, '0') + 'h';
+        ctx.fillText(lbl, x - 9, H - 8);
+      });
+
+      // Band label
+      ctx.fillStyle = amber;
+      ctx.font = "9px 'JetBrains Mono', monospace";
+      ctx.fillText('DAY', (x1 + x2) / 2 - 10, padY + 10);
+    }
+
+    function plotLine(series, color, width, alpha, dashed) {
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = width;
+      ctx.setLineDash(dashed ? [5, 4] : []);
+      ctx.beginPath();
+      for (let i = 0; i < series.length; i++) {
+        const [x, y] = toPx(i, series[i]);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    }
+
+    function plotDots(series, color, r) {
+      ctx.fillStyle = color;
+      for (let i = 0; i < series.length; i++) {
+        const [x, y] = toPx(i, series[i]);
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function markViolations(gen) {
+      ctx.save();
+      for (let i = 0; i < N; i++) {
+        if (gen[i] < 0 || gen[i] > 1) {
+          const [x, y] = toPx(i, gen[i]);
+          ctx.fillStyle = copper;
+          ctx.beginPath();
+          ctx.arc(x, y, 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = copper;
+          ctx.lineWidth = 1.2;
+          ctx.globalAlpha = 0.55;
+          ctx.beginPath();
+          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      }
+      ctx.restore();
+    }
+
+    function setMetric(el, text, good) {
+      el.textContent = text;
+      el.classList.remove('good', 'bad');
+      if (good === true)  el.classList.add('good');
+      if (good === false) el.classList.add('bad');
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      drawGrid();
+      const gen = applyConstraints();
+
+      plotLine(base, dim,   1.6, 0.55, true);
+      plotLine(gen,  amber, 2.1, 1,    false);
+      plotDots(gen,  amber, 2.4);
+      markViolations(gen);
+
+      const m = computeMetrics(gen);
+      setMetric(mOOS,  Math.round(m.oos) + '%',         m.oos === 0 ? true : m.oos > 8 ? false : null);
+      setMetric(mRank, Math.round(m.rank) + '%',        m.rank < 10 ? true : m.rank > 35 ? false : null);
+      setMetric(mDist, m.dist.toFixed(3),               m.dist < 0.15 ? true : m.dist > 0.30 ? false : null);
+    }
+
+    function resize() {
       const r = canvas.getBoundingClientRect();
       W = r.width; H = r.height;
       canvas.width = W * dpr; canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       draw();
     }
-    const css = getComputedStyle(document.documentElement);
-    const amber = css.getPropertyValue('--amber').trim() || '#a86a22';
-    const ink   = css.getPropertyValue('--ink').trim() || '#1a1410';
-    const dim   = css.getPropertyValue('--ink-dim').trim() || '#5a5048';
-    const line  = css.getPropertyValue('--line').trim() || '#e6dfd2';
 
-    const N = 200;
-    // deterministic base signal
-    const base = new Array(N).fill(0).map((_, i) => {
-      const x = i / N;
-      return Math.sin(x * Math.PI * 4) * 0.55
-           + Math.sin(x * Math.PI * 11 + 1.2) * 0.22
-           + Math.sin(x * Math.PI * 2.3) * 0.18;
-    });
-
-    // resampleable noise
-    let noise = new Array(N).fill(0).map(() => (Math.random() - 0.5) * 2);
-
-    const sigmaIn = document.getElementById('sigma');
-    const tauIn   = document.getElementById('tau');
-    const smoothIn= document.getElementById('smooth');
-    const sigmaOut= document.getElementById('sigma-out');
-    const tauOut  = document.getElementById('tau-out');
-    const smoothOut=document.getElementById('smooth-out');
-    const resampleBtn = document.getElementById('resample');
-
-    function smooth(arr, k) {
-      // simple moving average, k in [0, 1] maps to window 1..21
-      const win = 1 + Math.floor(k * 20);
-      if (win <= 1) return arr.slice();
-      const out = new Array(arr.length).fill(0);
-      for (let i = 0; i < arr.length; i++) {
-        let s = 0, c = 0;
-        for (let j = -win; j <= win; j++) {
-          const idx = i + j;
-          if (idx >= 0 && idx < arr.length) { s += arr[idx]; c++; }
-        }
-        out[i] = s / c;
-      }
-      return out;
-    }
-
-    function augmented(sigma, tau, sm) {
-      // smoothed noise scaled by sigma
-      const sn = smooth(noise, sm);
-      const out = new Array(N);
-      for (let i = 0; i < N; i++) {
-        // warp: pull sample index by tau * smoothed-noise-at-i
-        const warp = Math.round(tau * 22 * sn[i]);
-        const j = Math.min(N - 1, Math.max(0, i + warp));
-        out[i] = base[j] + sigma * sn[i];
-      }
-      return out;
-    }
-
-    function plot(series, color, width, alpha) {
-      ctx.strokeStyle = color;
-      ctx.globalAlpha = alpha;
-      ctx.lineWidth = width;
-      ctx.beginPath();
-      const pad = 24;
-      const plotW = W - pad * 2;
-      const plotH = H - pad * 2;
-      for (let i = 0; i < series.length; i++) {
-        const x = pad + (i / (series.length - 1)) * plotW;
-        const y = pad + plotH/2 - series[i] * plotH * 0.42;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      // grid
-      ctx.strokeStyle = line;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      for (let i = 0; i <= 4; i++) {
-        const y = 24 + (H - 48) * (i / 4);
-        ctx.moveTo(20, y); ctx.lineTo(W - 20, y);
-      }
-      for (let i = 0; i <= 8; i++) {
-        const x = 24 + (W - 48) * (i / 8);
-        ctx.moveTo(x, 20); ctx.lineTo(x, H - 20);
-      }
-      ctx.globalAlpha = 0.45;
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-
-      const sigma = +sigmaIn.value / 100;
-      const tau   = +tauIn.value / 100;
-      const sm    = +smoothIn.value / 100;
-
-      sigmaOut.textContent = sigma.toFixed(2);
-      tauOut.textContent   = tau.toFixed(2);
-      smoothOut.textContent= sm.toFixed(2);
-
-      const aug = augmented(sigma, tau, sm);
-      plot(base, dim, 1.5, 0.55);
-      plot(aug, amber, 1.8, 1);
-    }
-
-    sigmaIn.addEventListener('input', draw);
-    tauIn.addEventListener('input', draw);
-    smoothIn.addEventListener('input', draw);
-    resampleBtn.addEventListener('click', () => {
-      noise = new Array(N).fill(0).map(() => (Math.random() - 0.5) * 2);
+    [cAgg, cRank, cExt].forEach(el => el.addEventListener('change', draw));
+    btnResample.addEventListener('click', () => { regen(); draw(); });
+    btnAll.addEventListener('click', () => {
+      const allOn = cAgg.checked && cRank.checked && cExt.checked;
+      cAgg.checked = cRank.checked = cExt.checked = !allOn;
+      btnAll.textContent = allOn ? 'Apply all' : 'Clear all';
       draw();
     });
 
