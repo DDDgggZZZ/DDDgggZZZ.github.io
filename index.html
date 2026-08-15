@@ -1,1891 +1,416 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+<!-- Template: https://github.com/luost26/academic-homepage -->
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deng Guangze · 邓广泽</title>
-<meta name="description" content="Deng Guangze — CS student at Hunan University. Research in visualization & visual analytics.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #fbf8f2;
-    --paper: #ffffff;
-    --ink: #1a1410;
-    --ink-dim: #5a5048;
-    --ink-faint: #9a8f80;
-    --line: #e6dfd2;
-    --amber: #a86a22;
-    --amber-bright: #c48938;
-    --copper: #a84d2a;
-    --green: #5c6a3e;
-  }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Deng Guangze · 邓广泽</title>
+    <meta name="description" content="Deng Guangze — undergraduate student in Computer Science at Hunan University. Research at the intersection of Visual Analytics and Human-Centered AI.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' fill='white' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Manrope', -apple-system, sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    overflow-x: hidden;
-    position: relative;
-    min-height: 100vh;
-  }
-
-  /* Grain overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.08;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* Glow */
-  body::after {
-    content: '';
-    position: fixed;
-    top: -20%;
-    right: -10%;
-    width: 60vw;
-    height: 60vw;
-    background: radial-gradient(circle, rgba(184,120,60,0.14) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .wrap {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 32px;
-    position: relative;
-    z-index: 2;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 20px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    backdrop-filter: blur(12px);
-    background: rgba(251,248,242,0.78);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s;
-  }
-  nav.scrolled { border-bottom-color: var(--line); }
-  nav .mark {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 18px;
-    letter-spacing: 0.02em;
-  }
-  nav .mark span { color: var(--amber); }
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 28px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  nav a {
-    color: var(--ink-dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  nav a:hover { color: var(--amber); }
-  @media (max-width: 720px) {
-    nav ul { display: none; }
-  }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    padding: 130px 0 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-  }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 72px;
-    align-items: center;
-  }
-  @media (max-width: 980px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
-    .hero-right { order: -1; max-width: 220px; margin: 0 auto; text-align: center; }
-    .hero h1 { display: none; }
-    .contact-chips { justify-content: center; }
-    .portrait { max-width: 160px; margin: 0 auto; }
-  }
-  @media (max-width: 480px) {
-    .hero { padding: 90px 0 50px; }
-    .hero h1 { font-size: clamp(42px, 12vw, 54px); }
-    .hero-sub { font-size: 17px; margin-top: 16px; }
-    .hero-cta { margin-top: 32px; gap: 12px; }
-    .btn { padding: 11px 16px; font-size: 11px; }
-    .contact-chips { margin-top: 16px; }
-    .chip { padding: 6px 10px; font-size: 10px; }
-    .hero-name-mobile { font-size: clamp(32px, 10vw, 44px); }
-  }
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .hero-meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    display: flex;
-    gap: 24px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.1s forwards;
-  }
-  .hero-meta span::before {
-    content: '◆';
-    color: var(--amber);
-    margin-right: 8px;
-    font-size: 8px;
-    vertical-align: middle;
-  }
-
-  .hero h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: clamp(54px, 8.2vw, 120px);
-    line-height: 0.94;
-    letter-spacing: -0.03em;
-    margin-bottom: 8px;
-    opacity: 0;
-    animation: fadeUp 1s 0.25s forwards;
-  }
-  .hero h1 .cn {
-    font-weight: 300;
-    letter-spacing: 0.02em;
-    color: var(--amber);
-    font-style: italic;
-  }
-
-  .hero-sub {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: clamp(20px, 2.4vw, 26px);
-    color: var(--ink-dim);
-    max-width: 680px;
-    margin-top: 24px;
-    line-height: 1.4;
-    opacity: 0;
-    animation: fadeUp 1s 0.45s forwards;
-  }
-  .hero-sub em {
-    color: var(--amber-bright);
-    font-style: italic;
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 24px;
-    margin-top: 56px;
-    align-items: center;
-    opacity: 0;
-    animation: fadeUp 1s 0.6s forwards;
-    flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 22px;
-    border: 1px solid var(--line);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: all 0.25s;
-    background: transparent;
-    cursor: pointer;
-  }
-  .btn:hover {
-    border-color: var(--amber);
-    color: var(--amber);
-    transform: translateY(-1px);
-  }
-  .btn.primary {
-    background: var(--amber);
-    color: var(--bg);
-    border-color: var(--amber);
-  }
-  .btn.primary:hover {
-    background: var(--amber-bright);
-    border-color: var(--amber-bright);
-    color: var(--bg);
-  }
-  .btn svg { width: 14px; height: 14px; }
-
-  /* CONTACT CHIPS in hero */
-  .contact-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 32px;
-    opacity: 0;
-    animation: fadeUp 1s 0.75s forwards;
-  }
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border: 1px solid var(--line);
-    background: var(--paper);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--ink-dim);
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-  .chip:hover { color: var(--amber); border-color: var(--amber); transform: translateY(-1px); }
-  .chip svg { width: 12px; height: 12px; opacity: 0.75; }
-
-  /* SIGNAL widget */
-  .signal-widget {
-    border: 1px solid var(--line);
-    background: var(--paper);
-    padding: 14px 16px;
-    position: relative;
-    overflow: hidden;
-  }
-  .signal-widget canvas {
-    display: block;
-    width: 100%;
-    height: 96px;
-  }
-  .signal-meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--line);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-  }
-  .signal-meta .signal-value { color: var(--amber); }
-  .signal-meta .live::before {
-    content: '●';
-    color: #c95040;
-    margin-right: 6px;
-    animation: pulse 1.6s infinite;
-    font-size: 9px;
-    vertical-align: middle;
-  }
-  @keyframes pulse { 0%,100%{ opacity: 1 } 50%{ opacity: 0.25 } }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 40px;
-    left: 32px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    opacity: 0;
-    animation: fadeUp 1s 0.9s forwards;
-  }
-  .scroll-hint::after {
-    content: '';
-    width: 40px; height: 1px;
-    background: var(--ink-faint);
-    animation: slide 2s infinite;
-  }
-
-  /* SECTION */
-  section { padding: 120px 0; position: relative; }
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-label::before {
-    content: '';
-    width: 24px; height: 1px;
-    background: var(--amber);
-  }
-  .section-title {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: clamp(36px, 5.5vw, 64px);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 64px;
-    max-width: 900px;
-  }
-  .section-title em {
-    font-style: italic;
-    color: var(--amber);
-  }
-
-  /* ABOUT */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-  @media (max-width: 820px) {
-    .about-grid { grid-template-columns: 1fr; gap: 48px; }
-  }
-  .portrait {
-    position: relative;
-    border: 1px solid var(--line);
-    background: var(--paper);
-    padding: 10px 10px 0;
-    box-shadow: 0 20px 40px -24px rgba(60,40,10,0.18);
-    max-width: 260px;
-  }
-  .portrait img {
-    display: block;
-    width: 100%;
-    height: auto;
-    filter: grayscale(0.1) contrast(1.02);
-  }
-  .portrait figcaption {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    padding: 12px 2px 10px;
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .portrait figcaption em {
-    color: var(--amber);
-    font-style: normal;
-  }
-  .about-prose p {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: 22px;
-    line-height: 1.55;
-    color: var(--ink);
-    margin-bottom: 24px;
-  }
-  .about-prose p + p { color: var(--ink-dim); font-size: 18px; }
-
-  .stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-  }
-  .stat {
-    padding: 28px 24px;
-    background: var(--paper);
-  }
-  .stat-num {
-    font-family: 'Fraunces', serif;
-    font-size: 44px;
-    font-weight: 300;
-    line-height: 1;
-    color: var(--amber);
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-  }
-  .stat-num sup { font-size: 18px; vertical-align: super; color: var(--ink-dim); }
-  .stat-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-dim);
-  }
-
-  /* RESEARCH */
-  .pub-card {
-    border-top: 1px solid var(--line);
-    padding: 40px 0;
-    display: grid;
-    grid-template-columns: 220px 1fr auto;
-    gap: 40px;
-    align-items: start;
-    transition: background 0.3s;
-  }
-  .pub-thumb {
-    border: 1px solid var(--line);
-    background: var(--paper);
-    padding: 6px;
-    overflow: hidden;
-  }
-  .pub-thumb img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  .pub-year-inline {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: block;
-  }
-  .pub-card:last-child { border-bottom: 1px solid var(--line); }
-  .pub-card:hover { background: linear-gradient(90deg, rgba(168,106,34,0.06), transparent); }
-  @media (max-width: 820px) {
-    .pub-card { grid-template-columns: 1fr; gap: 16px; padding: 32px 0; }
-  }
-  .pub-year {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--amber);
-    letter-spacing: 0.1em;
-  }
-  .pub-title {
-    font-family: 'Fraunces', serif;
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 1.35;
-    margin-bottom: 10px;
-    letter-spacing: -0.01em;
-  }
-  .pub-authors {
-    font-size: 14px;
-    color: var(--ink-dim);
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  .pub-authors b { color: var(--ink); font-weight: 500; }
-  .pub-venue {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-  }
-  .pub-venue em {
-    color: var(--copper);
-    font-style: normal;
-    margin-left: 8px;
-  }
-  .pub-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--amber);
-    border: 1px solid var(--amber);
-    padding: 6px 10px;
-    white-space: nowrap;
-    align-self: start;
-  }
-
-  /* LAB — TimeShaper mini-demo */
-  .lab-intro {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: 20px;
-    line-height: 1.55;
-    color: var(--ink-dim);
-    max-width: 820px;
-    margin: -40px 0 40px;
-  }
-  .lab-intro strong {
-    color: var(--ink);
-    font-weight: 500;
-    font-style: italic;
-  }
-  .lab {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 28px;
-    border: 1px solid var(--line);
-    background: var(--paper);
-    padding: 32px 28px 28px;
-    position: relative;
-    box-shadow: 0 24px 48px -30px rgba(60,40,10,0.18);
-  }
-  .lab::before {
-    content: 'TimeShaper · live demo';
-    position: absolute;
-    top: -10px;
-    left: 24px;
-    background: var(--bg);
-    padding: 0 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--amber);
-  }
-  @media (max-width: 900px) {
-    .lab { grid-template-columns: 1fr; padding: 28px 18px 18px; gap: 22px; }
-    .lab-intro { margin: -16px 0 32px; font-size: 17px; }
-  }
-
-  .lab-viz {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    min-width: 0;
-  }
-  .fact-strip {
-    display: flex;
-    gap: 3px;
-    height: 20px;
-  }
-  .fact-chip {
-    flex: 1;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--paper);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--ink-dim);
-  }
-  .fact-chip.A { background: #b38a4a; flex: 2.2; }
-  .fact-chip.T { background: #8a6a4a; flex: 1.6; }
-  .fact-chip.E { background: #a84d2a; flex: 0.9; }
-  .fact-chip.R { background: #5c6a3e; flex: 1.8; }
-  .fact-chip.D { background: #7a6b8a; flex: 1.2; }
-
-  .lab-canvas {
-    position: relative;
-    border: 1px solid var(--line);
-    background:
-      linear-gradient(180deg, rgba(168,106,34,0.035), transparent 60%),
-      repeating-linear-gradient(90deg, transparent 0 23px, rgba(168,106,34,0.04) 23px 24px);
-  }
-  .lab-canvas canvas {
-    display: block;
-    width: 100%;
-    height: 300px;
-  }
-  .lab-legend {
-    position: absolute;
-    top: 10px;
-    right: 14px;
-    display: flex;
-    gap: 16px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .lab-legend span::before {
-    content: '—';
-    margin-right: 5px;
-    font-weight: 700;
-  }
-  .lab-legend .orig::before { color: var(--ink-dim); }
-  .lab-legend .gen::before  { color: var(--amber); }
-  .lab-legend .vio::before  { color: var(--copper); content: '●'; font-size: 8px; }
-
-  .lab-metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-  }
-  .metric {
-    padding: 14px 18px;
-    background: var(--paper);
-  }
-  .metric-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-bottom: 8px;
-    display: block;
-  }
-  .metric-value {
-    font-family: 'Fraunces', serif;
-    font-size: 30px;
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    transition: color 0.4s;
-  }
-  .metric-value.good { color: var(--green); }
-  .metric-value.bad  { color: var(--copper); }
-  .metric-delta {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--ink-faint);
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-
-  /* Controls side */
-  .lab-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .ctrl-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-dim);
-    margin-bottom: 2px;
-  }
-  .constraint-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .constraint-toggle {
-    display: flex;
-    gap: 12px;
-    padding: 13px 15px;
-    border: 1px solid var(--line);
-    background: var(--bg);
-    cursor: pointer;
-    transition: all 0.2s;
-    align-items: flex-start;
-    position: relative;
-  }
-  .constraint-toggle:hover { border-color: var(--amber); }
-  .constraint-toggle input {
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border: 1px solid var(--ink-faint);
-    background: var(--paper);
-    flex-shrink: 0;
-    margin-top: 3px;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s;
-  }
-  .constraint-toggle input:checked {
-    background: var(--amber);
-    border-color: var(--amber);
-  }
-  .constraint-toggle input:checked::after {
-    content: '';
-    position: absolute;
-    left: 4px;
-    top: 1px;
-    width: 4px;
-    height: 8px;
-    border: solid var(--paper);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  .constraint-toggle:has(input:checked) {
-    border-color: var(--amber);
-    background: rgba(168,106,34,0.05);
-  }
-  .ct-body { flex: 1; min-width: 0; }
-  .ct-type {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    display: block;
-    margin-bottom: 4px;
-    transition: color 0.2s;
-  }
-  .constraint-toggle:has(input:checked) .ct-type { color: var(--amber); }
-  .ct-text {
-    font-family: 'Fraunces', serif;
-    font-size: 14.5px;
-    color: var(--ink);
-    line-height: 1.4;
-  }
-  .ct-text code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    background: rgba(168,106,34,0.1);
-    padding: 1px 6px;
-    color: var(--amber);
-  }
-
-  .lab-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 6px;
-  }
-  .lab-actions button {
-    flex: 1;
-    padding: 11px 12px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .lab-actions button:hover { border-color: var(--amber); color: var(--amber); }
-  .lab-actions button.primary {
-    background: var(--amber);
-    color: var(--bg);
-    border-color: var(--amber);
-  }
-  .lab-actions button.primary:hover {
-    background: var(--amber-bright);
-    border-color: var(--amber-bright);
-    color: var(--bg);
-  }
-  .lab-hint {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 13px;
-    color: var(--ink-faint);
-    line-height: 1.55;
-    padding-top: 12px;
-    border-top: 1px dashed var(--line);
-    margin-top: 4px;
-  }
-
-  /* PROJECTS */
-  .projects {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-  @media (max-width: 820px) {
-    .projects { grid-template-columns: 1fr; }
-  }
-  .project {
-    border: 1px solid var(--line);
-    padding: 36px 32px;
-    background: var(--paper);
-    position: relative;
-    transition: all 0.35s;
-    overflow: hidden;
-  }
-  .project::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 0; height: 1px;
-    background: var(--amber);
-    transition: width 0.5s;
-  }
-  .project:hover { transform: translateY(-3px); border-color: var(--amber); }
-  .project:hover::before { width: 100%; }
-
-  .project-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 20px;
-    gap: 16px;
-  }
-  .project-num {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--amber);
-  }
-  .project-role {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .project h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 26px;
-    font-weight: 400;
-    line-height: 1.25;
-    margin-bottom: 16px;
-    letter-spacing: -0.01em;
-  }
-  .project p {
-    font-size: 15px;
-    color: var(--ink-dim);
-    line-height: 1.65;
-    margin-bottom: 20px;
-  }
-  .tech-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--line);
-  }
-  .tech {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    color: var(--ink-dim);
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border: 1px solid var(--line);
-  }
-
-  /* AWARDS */
-  .awards-list { list-style: none; }
-  .award-row {
-    display: grid;
-    grid-template-columns: 60px 1fr auto;
-    gap: 32px;
-    padding: 24px 0;
-    border-top: 1px solid var(--line);
-    align-items: center;
-  }
-  .award-row:last-child { border-bottom: 1px solid var(--line); }
-  @media (max-width: 720px) {
-    .award-row { grid-template-columns: 40px 1fr; }
-    .award-level { grid-column: 2; text-align: left !important; padding-left: 0 !important; }
-  }
-  .award-mark {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 24px;
-    color: var(--amber);
-    font-weight: 300;
-  }
-  .award-name {
-    font-family: 'Fraunces', serif;
-    font-size: 18px;
-    font-weight: 400;
-  }
-  .award-sub {
-    display: block;
-    font-family: 'Manrope', sans-serif;
-    font-size: 13px;
-    color: var(--ink-dim);
-    margin-top: 4px;
-  }
-  .award-level {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--ink-dim);
-    text-transform: uppercase;
-    text-align: right;
-    padding-left: 16px;
-  }
-  .award-level.gold { color: var(--amber); }
-
-  /* BEYOND */
-  .beyond-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-    margin-top: 16px;
-  }
-  @media (max-width: 820px) {
-    .beyond-grid { grid-template-columns: 1fr; gap: 40px; }
-  }
-  .beyond-card {
-    position: relative;
-  }
-  .beyond-card h4 {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 28px;
-    color: var(--amber);
-    margin-bottom: 16px;
-    letter-spacing: -0.01em;
-  }
-  .beyond-card p {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--ink-dim);
-    margin-bottom: 16px;
-  }
-  .beyond-tags {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-    padding-top: 16px;
-    border-top: 1px dashed var(--line);
-  }
-
-  /* QUOTE */
-  .pull-quote {
-    margin: 100px 0;
-    padding: 80px 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    text-align: center;
-  }
-  .pull-quote blockquote {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: clamp(28px, 4.5vw, 44px);
-    line-height: 1.35;
-    letter-spacing: -0.01em;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .pull-quote blockquote::before,
-  .pull-quote blockquote::after {
-    content: '"';
-    color: var(--amber);
-    font-size: 1.2em;
-  }
-
-  /* CONTACT */
-  .contact {
-    padding: 120px 0 80px;
-    text-align: center;
-  }
-  .contact h2 {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: clamp(44px, 7vw, 88px);
-    letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 24px;
-  }
-  .contact h2 em { color: var(--amber); font-style: italic; }
-  .contact p {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 22px;
-    color: var(--ink-dim);
-    margin-bottom: 48px;
-  }
-  .contact-links {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* FOOTER */
-  footer {
-    padding: 40px 0;
-    border-top: 1px solid var(--line);
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  footer .mark-footer {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--amber);
-    text-transform: none;
-    letter-spacing: 0;
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes slide {
-    0%, 100% { transform: scaleX(0.3); transform-origin: left; }
-    50% { transform: scaleX(1); transform-origin: left; }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.9s ease, transform 0.9s ease;
-  }
-  .reveal.in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Mobile-only name display (below portrait) */
-  .hero-name-mobile {
-    display: none;
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: clamp(36px, 10vw, 48px);
-    line-height: 1;
-    letter-spacing: -0.03em;
-    margin: 14px 0 6px;
-  }
-  .hero-name-mobile .cn {
-    color: var(--amber);
-    font-style: italic;
-  }
-  @media (max-width: 980px) {
-    .hero-name-mobile { display: block; }
-  }
-
-  /* Global mobile improvements */
-  @media (max-width: 640px) {
-    .wrap { padding: 0 20px; }
-    nav { padding: 14px 20px; }
-    section { padding: 72px 0; }
-    .section-title { font-size: clamp(26px, 7vw, 40px); margin-bottom: 36px; }
-    .hero-meta { font-size: 10px; gap: 14px; margin-bottom: 20px; }
-    .hero-sub { font-size: 16px; max-width: 100%; }
-    .about-prose p { font-size: 18px; }
-    .about-prose p + p { font-size: 15px; }
-    .pub-title { font-size: 18px; }
-    .project { padding: 24px 18px; }
-    .project h3 { font-size: 21px; }
-    .contact h2 { font-size: clamp(34px, 9vw, 56px); }
-    .contact p { font-size: 17px; margin-bottom: 32px; }
-    .pull-quote { margin: 56px 0; padding: 48px 0; }
-    .pull-quote blockquote { font-size: clamp(20px, 5.5vw, 30px); }
-    .stat-num { font-size: 34px; }
-    .stat { padding: 20px 16px; }
-    .beyond-card h4 { font-size: 22px; }
-    .beyond-card p { font-size: 14px; }
-    .award-name { font-size: 16px; }
-    .lab-intro { font-size: 15px; }
-  }
-</style>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Noto+Sans+SC:wght@400;500;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Lato", "Noto Sans SC", sans-serif;
+            font-weight: 400;
+            padding-top: 5.0rem;
+        }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+        html { scroll-behavior: smooth; }
+        .card { border-radius: 0.8rem !important; }
+        .rounded-xl { border-radius: 0.8rem !important; }
+        .text-profile-position { font-weight: 400; }
+        .text-profile-bio { font-weight: 400; }
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.6) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .no-break { white-space: nowrap; }
+        .email-text { font-family: "Source Code Pro", monospace; }
+        .inline-badge { height: 16px; vertical-align: -10%; margin-right: 2px; }
+        .teaser-box {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            background: #f8f9fa;
+            aspect-ratio: 16 / 10;
+        }
+        @media (min-width: 768px) {
+            .teaser-box { aspect-ratio: auto; }
+        }
+        .teaser-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        /* Language toggle placement */
+        .lang-btn { margin-left: auto; font-size: 0.85em; }
+        @media (max-width: 575.98px) {
+            .navbar-toggler { margin-left: auto; }
+            .lang-btn { margin-left: 0.5rem; }
+        }
+        @media (min-width: 576px) {
+            .lang-btn { margin-left: 0.5rem; }
+            .navbar-collapse { margin-left: auto; }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light" data-spy="scroll" data-target="#navbarResponsive" data-offset="100">
 
-<nav id="nav">
-  <div class="mark">Guangze<span>.</span></div>
-  <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="#research">Research</a></li>
-    <li><a href="#lab">Lab</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#beyond">Beyond</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<div class="wrap">
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-grid">
-      <div class="hero-left">
-        <div class="hero-meta">
-          <span>Hunan University</span>
-          <span>Computer Science · Class of 2027</span>
-          <span>Based in Changsha</span>
-        </div>
-        <h1>Deng<br><span class="cn">Guangze</span></h1>
-        <p class="hero-sub">
-          Third-year CS student working at the intersection of
-          <em>visual analytics</em>, <em>deep learning</em>, and things that
-          make complex data feel intuitive.
-        </p>
-        <div class="hero-cta">
-          <a href="#research" class="btn primary">
-            View research
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#lab" class="btn">Try the demo</a>
-        </div>
-      </div>
-      <div class="hero-right">
-        <figure class="portrait">
-          <img src="my_photo.jpg" alt="Deng Guangze · portrait">
-          <figcaption><em>Portrait</em><span>Changsha · 2025</span></figcaption>
-        </figure>
-        <div class="hero-name-mobile">Deng<br><span class="cn">Guangze</span></div>
-        <div class="contact-chips">
-          <a href="mailto:2908251804@qq.com" class="chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            2908251804@qq.com
-          </a>
-          <a href="tel:+8617721501870" class="chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            +86 177 2150 1870
-          </a>
-          <a href="https://github.com/DDDgggZZZ" target="_blank" rel="noopener" class="chip">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.58.11.79-.25.79-.56 0-.28-.01-1.02-.01-2-3.2.69-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.95.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.73 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-            DDDgggZZZ
-          </a>
-          <span class="chip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Changsha · CN
-          </span>
-        </div>
-        <div class="signal-widget">
-          <canvas id="signal-canvas"></canvas>
-          <div class="signal-meta">
-            <span class="live">Daily Rhythm</span>
-            <span class="signal-value" id="signal-value">—</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="scroll-hint">Scroll</div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="reveal">
-    <div class="section-label">01 — About</div>
-    <h2 class="section-title">A student who cares about <em>craft</em>, in research and otherwise.</h2>
-    <div class="about-grid">
-      <div class="about-prose">
-        <p>
-          I'm a junior at Hunan University, currently ranked 2/189 in my class.
-          My main research interest is visual analytics — designing interfaces
-          that help humans make sense of complex machine learning systems.
-        </p>
-        <p>
-          I'm a co-first author on a paper under review at IEEE VIS 2026, where
-          we built a data-fact-driven visual analysis system for generative
-          time-series data augmentation. Outside of research, I play Go
-          (amateur 5-dan), ride road bikes around Hunan, chase mountain
-          light with a camera, and try to write code that ages well.
-        </p>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-num">2<sup>/189</sup></div>
-          <div class="stat-label">Class Rank · Top 1%</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">3.97<sup>/4.0</sup></div>
-          <div class="stat-label">GPA · Core Courses</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">91.73</div>
-          <div class="stat-label">Weighted Average</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">41</div>
-          <div class="stat-label">Courses above 90</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- RESEARCH -->
-  <section id="research" class="reveal">
-    <div class="section-label">02 — Research</div>
-    <h2 class="section-title">Papers at the edge of <em>visualization</em> and ML.</h2>
-
-    <div class="pub-card">
-      <figure class="pub-thumb">
-        <img src="paper_overview.png" alt="Paper overview — data-fact-driven VA system">
-      </figure>
-      <div>
-        <span class="pub-year-inline">2026 · IEEE VIS</span>
-        <div class="pub-title">A Data-Fact-Driven Visual Analysis Method for Generative Time Series Data Augmentation</div>
-        <div class="pub-authors">
-          Fei Lyu*, <b>Guangze Deng*</b>, Zhuo Tang, Kenli Li, Changjian Chen
-          <br><span style="font-size:12px; color: var(--ink-faint);">* Co-first authors</span>
-        </div>
-        <div class="pub-venue">IEEE VIS 2026 <em>· CCF-A · Under Review</em></div>
-      </div>
-      <div class="pub-tag">First author</div>
-    </div>
-  </section>
-
-  <!-- LAB · TimeShaper interactive demo -->
-  <section id="lab" class="reveal">
-    <div class="section-label">03 — Lab</div>
-    <h2 class="section-title">Shape the signal with <em>data-fact constraints</em>.</h2>
-    <p class="lab-intro">
-      A miniature of the <strong>TimeShaper</strong> workflow from my paper. Automatic
-      generation of hourly traffic-volume samples misbehaves in three predictable ways —
-      out-of-scope values, flipped day/night rank, and spurious extremes. Toggle the
-      data-fact constraints and watch both the curve and the violation metrics fall into line.
-    </p>
-    <div class="lab">
-      <div class="lab-viz">
-        <div class="fact-strip" aria-hidden="true" title="Representative data facts extracted from the sample">
-          <span class="fact-chip A">A</span>
-          <span class="fact-chip R">R</span>
-          <span class="fact-chip T">T</span>
-          <span class="fact-chip A">A</span>
-          <span class="fact-chip E">E</span>
-          <span class="fact-chip A">A</span>
-          <span class="fact-chip T">T</span>
-          <span class="fact-chip D">D</span>
-          <span class="fact-chip A">A</span>
-        </div>
-        <div class="lab-canvas">
-          <div class="lab-legend">
-            <span class="orig">Original</span>
-            <span class="gen">Generated</span>
-            <span class="vio">Violation</span>
-          </div>
-          <canvas id="aug-canvas"></canvas>
-        </div>
-        <div class="lab-metrics">
-          <div class="metric">
-            <span class="metric-label">Out-of-scope</span>
-            <div class="metric-value bad" id="m-oos">—</div>
-          </div>
-          <div class="metric">
-            <span class="metric-label">Rank violation</span>
-            <div class="metric-value bad" id="m-rank">—</div>
-          </div>
-          <div class="metric">
-            <span class="metric-label">J-FTSD<span class="metric-delta">lower is better</span></span>
-            <div class="metric-value bad" id="m-dist">—</div>
-          </div>
-        </div>
-      </div>
-      <div class="lab-controls">
-        <div class="ctrl-label">Apply constraints</div>
-        <div class="constraint-list">
-          <label class="constraint-toggle">
-            <input type="checkbox" id="c-agg">
-            <div class="ct-body">
-              <span class="ct-type">Aggregation</span>
-              <span class="ct-text">All values must fall in <code>[0, 1]</code>.</span>
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar navbar-expand-sm navbar-light fixed-top mb-5 shadow-sm">
+        <div class="container-lg">
+            <a class="navbar-brand" href="#about"><strong data-i18n="brand">Guangze Deng</strong></a>
+            <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-map"></i> <span data-i18n="menu">Menu</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#about" data-i18n="nav-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#publications" data-i18n="nav-pubs">Publications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#beyond" data-i18n="nav-beyond">Beyond Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="assets/pdfs/%E7%AE%80%E5%8E%86_%E9%82%93%E5%B9%BF%E6%B3%BD_%E6%B9%96%E5%8D%97%E5%A4%A7%E5%AD%A6%E8%AE%A1%E7%A7%91.pdf" target="_blank" rel="noopener" data-i18n="nav-cv">CV</a>
+                    </li>
+                </ul>
             </div>
-          </label>
-          <label class="constraint-toggle">
-            <input type="checkbox" id="c-rank">
-            <div class="ct-body">
-              <span class="ct-type">Rank</span>
-              <span class="ct-text">Daytime volume <code>&gt;</code> nighttime volume.</span>
+            <button id="lang-toggle" type="button" class="btn btn-sm btn-outline-secondary lang-btn">中文</button>
+        </div>
+    </nav>
+
+    <div class="container-lg">
+
+        <!-- ============ PROFILE CARD ============ -->
+        <div class="row">
+            <div class="col">
+                <div class="card border-0 shadow-sm bg-white" id="about">
+                    <div class="card-body p-5">
+                        <div class="row">
+                            <div class="col">
+
+                                <!-- Portrait floats right on md+ screens -->
+                                <div class="figure float-right ml-4 mb-4 d-none d-md-block">
+                                    <img src="assets/images/my_photo.jpg"
+                                         class="figure-img img-fluid img-thumbnail"
+                                         style="height: 200px;"
+                                         alt="Deng Guangze · portrait">
+                                </div>
+
+                                <div class="d-flex">
+                                    <div class="h1 font-weight-normal">
+                                        Guangze Deng <small class="text-muted">邓广泽</small>
+                                    </div>
+                                    <div class="ml-auto d-md-none">
+                                        <a href="assets/images/my_photo.jpg" target="_blank">
+                                            <img src="assets/images/my_photo.jpg" class="rounded-circle" style="height: 48px;" alt="Portrait">
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="text-profile-position" data-i18n="position">
+                                    CS Undergraduate · Class of 2027<br/>
+                                    <img src="assets/images/hnu_badge.png" alt="Hunan University" class="inline-badge"/>
+                                    Hunan University · Changsha, China
+                                </div>
+
+                                <div class="text-profile-bio mt-3">
+                                    <p data-i18n="bio-p1">
+                                        I am an undergraduate student in Computer Science at Hunan University,
+                                        working with <a href="https://changjianchen.github.io/" target="_blank" rel="noopener">Prof. Changjian Chen</a>.
+                                        My research lies at the intersection of
+                                        <strong>Visual Analytics</strong> and <strong>Human-Centered AI</strong>.
+                                        I am interested in building and evaluating interactive systems that help
+                                        people understand, evaluate, and steer AI for data analysis, with a
+                                        particular focus on LLM- and agent-based workflows.
+                                    </p>
+                                    <p data-i18n="bio-p2">
+                                        Beyond research, I play Go (amateur 5-dan), ride bikes around
+                                        Hunan, chase mountain light with a camera, and try to write code
+                                        that ages well.
+                                    </p>
+                                </div>
+
+                                <hr />
+
+                                <!-- Contact -->
+                                <div id="contact">
+                                    <a class="pr-3" href="mailto:gzdeng@hnu.edu.cn">
+                                        <i class="fas fa-at"></i> <span class="email-text">gzdeng@hnu.edu.cn</span>
+                                    </a>
+                                    <a class="pr-3 no-break" target="_blank" href="https://github.com/DDDgggZZZ">
+                                        <i class="fab fa-github"></i> GitHub
+                                    </a>
+                                    <span class="no-break" data-i18n="contact-loc">
+                                        <i class="fas fa-location-dot"></i> Changsha, China
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </label>
-          <label class="constraint-toggle">
-            <input type="checkbox" id="c-ext">
-            <div class="ct-body">
-              <span class="ct-type">Extreme</span>
-              <span class="ct-text">Dampen point-wise outliers.</span>
+        </div>
+
+        <!-- ============ EDUCATION & AWARDS ============ -->
+        <div class="row mt-3" id="recognition">
+            <div class="col">
+                <div class="card border-0 shadow-sm bg-white">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mx-2 my-1">
+                                    <h6 data-i18n="edu-title"><i class="fas fa-graduation-cap"></i> Education</h6>
+                                    <ul class="list-unstyled mb-1">
+                                        <li class="media mb-1">
+                                            <img src="assets/images/hnu_badge.png" alt="Hunan University" style="width: 18px;" class="mr-1 mt-1">
+                                            <div class="media-body">
+                                                <div data-i18n="edu-school">Hunan University</div>
+                                                <div class="small"></div>
+                                                <div class="small d-flex">
+                                                    <div data-i18n="edu-major">Computer Science · Class of 2027</div>
+                                                    <div class="mt-auto ml-auto no-break"><em data-i18n="edu-date">Sep. 2023 – Jun. 2027 (expected)</em></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mx-2 my-1">
+                                    <h6 data-i18n="honors-title"><i class="fas fa-award"></i> Honors &amp; Awards</h6>
+                                    <ul class="list small pl-3 mb-1">
+                                        <li>
+                                            <div class="d-flex">
+                                                <div data-i18n="award1">National Scholarship</div>
+                                                <div class="ml-auto mt-auto no-break"><em>2025.12</em></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex">
+                                                <div data-i18n="award2">China Collegiate Computing Contest · 2nd Prize</div>
+                                                <div class="ml-auto mt-auto no-break"><em>2024.3</em></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex">
+                                                <div data-i18n="award3">MCM/ICM · Honorable Mention</div>
+                                                <div class="ml-auto mt-auto no-break"><em>2024.10</em></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </label>
         </div>
-        <div class="lab-actions">
-          <button id="resample" type="button">↻ Resample</button>
-          <button id="apply-all" class="primary" type="button">Apply all</button>
+
+        <!-- ============ PUBLICATIONS ============ -->
+        <div class="my-3 bg-white shadow-sm rounded-xl" id="publications">
+            <h6 class="p-3 mb-0 border-bottom border-gray" data-i18n="pubs-title">
+                <i class="fas fa-star"></i> Publications
+            </h6>
+            <div class="row no-gutters">
+                <div class="col-md-3 col-xl-2 mb-md-0 p-md-3 d-md-flex">
+                    <div class="teaser-box">
+                        <img src="assets/images/teaser.png" alt="Teaser figure — TimeShaper" class="teaser-img">
+                    </div>
+                </div>
+                <div class="col-md-9 col-xl-10 p-3 pl-md-0">
+                    <h5 class="mt-0 mb-1 font-weight-normal">
+                        A Data-Fact-Driven Visual Analysis Method for Generative Time Series Data Augmentation
+                    </h5>
+                    <p class="mt-0 mb-0 small">
+                        <span class="text-body">Fei Lyu*, </span><span class="text-body"><strong>Guangze Deng*</strong>, </span><span class="text-body">Zhuo Tang, Kenli Li, Changjian Chen</span>
+                        <mark data-i18n="pub-note">(* <i>equal contribution</i>)</mark>
+                    </p>
+                    <p class="mt-0 mb-0 small" data-i18n="pub-venue">
+                        <i>Manuscript under review, 2026</i>
+                    </p>
+                    <p class="mt-0 mb-0 small text-muted" data-i18n="pub-tldr">
+                        A visual analysis system that involves humans in generative time-series
+                        data augmentation: fact-based visualization for comparing original and
+                        generated samples, and constraint visualization to guide the generation
+                        process toward higher-quality data.
+                    </p>
+                    <p class="small pb-0 mb-0 lh-125 text-muted abstract-links">
+                        <a target="_blank" href="assets/pdfs/Interactive_Time_Series_Dataset_Expansion%20(2).pdf">[PDF]</a>
+                    </p>
+                </div>
+            </div>
         </div>
-        <p class="lab-hint">
-          Each tick on the x-axis is an hour. Red-ringed points sit outside the
-          expected scope. Enabling a constraint rewrites the generated series and
-          updates the violation ratio — the inner loop of the paper, on one sample.
-        </p>
-      </div>
+
+        <!-- ============ BEYOND CODE ============ -->
+        <div class="my-3 bg-white shadow-sm rounded-xl" id="beyond">
+            <h6 class="p-3 mb-0 border-bottom border-gray" data-i18n="beyond-title">
+                <i class="fas fa-coffee"></i> Beyond Code
+            </h6>
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="font-weight-bold small" data-i18n="b1t">On Go · 围棋</div>
+                        <div class="small text-muted" data-i18n="b1">
+                            Amateur 5-dan. Go taught me to think in shape and sequence —
+                            the best engineering decisions feel the same way.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="font-weight-bold small" data-i18n="b2t">On Cycling</div>
+                        <div class="small text-muted" data-i18n="b2">
+                            Road bike, long rides around Hunan. Kilometers make better
+                            debuggers than compilers.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="font-weight-bold small" data-i18n="b3t">On Seeing</div>
+                        <div class="small text-muted" data-i18n="b3">
+                            Landscape photography, mostly mountains — I chase the unusual
+                            angle, the edge of the frame.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-  </section>
 
-  <!-- PROJECTS -->
-  <section id="projects" class="reveal">
-    <div class="section-label">04 — Projects</div>
-    <h2 class="section-title">Work I'm <em>proud of</em>.</h2>
-
-    <div class="projects">
-      <article class="project">
-        <div class="project-header">
-          <span class="project-num">№ 01 · 2025</span>
-          <span class="project-role">Core contributor</span>
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer border-top py-2 mt-5 bg-white small">
+        <div class="container-lg">
+            <div class="row my-3">
+                <div class="col-6">
+                    <div class="text-muted" data-i18n="footer-updated">
+                        <i>Last updated: Aug 2026</i>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-right text-muted">
+                        <a href="https://github.com/luost26/academic-homepage" target="_blank"><i class="fas fa-pencil-ruler"></i> academic-homepage</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h3>Data-Fact-Driven Visual Analysis for Time-Series Generation</h3>
-        <p>
-          A visual analytics system that uses automated fact extraction,
-          multi-objective subset selection, and LLM-assisted interaction
-          to make high-quality, controllable time-series data augmentation
-          tractable. I led the uncertainty visualization component and
-          the generation & evaluation experiments.
-        </p>
-        <div class="tech-stack">
-          <span class="tech">Vue.js</span>
-          <span class="tech">D3.js</span>
-          <span class="tech">Python</span>
-          <span class="tech">LLM</span>
-          <span class="tech">VA</span>
-        </div>
-      </article>
+    </footer>
 
-      <article class="project">
-        <div class="project-header">
-          <span class="project-num">№ 02 · 2025</span>
-          <span class="project-role">Principal Investigator</span>
-        </div>
-        <h3>Tower-AI — Real-time Hazard Detection for Telecom Infrastructure</h3>
-        <p>
-          A provincial-level SIT project I lead. Built a two-stage deep-learning
-          pipeline (cruise detection + precise detection) on top of an improved
-          YOLOv8 for multi-scenario tower inspection — power lines, corrosion,
-          intrusion — with a visualization dashboard for real-time alerts and
-          device management.
-        </p>
-        <div class="tech-stack">
-          <span class="tech">YOLOv8</span>
-          <span class="tech">PyTorch</span>
-          <span class="tech">CV</span>
-          <span class="tech">Vue.js</span>
-        </div>
-      </article>
-    </div>
-  </section>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous"></script>
+    <script>
+        (function () {
+            var I18N = {
+                en: {
+                    'brand': '<strong>Guangze Deng</strong>',
+                    'nav-about': 'About',
+                    'nav-pubs': 'Publications',
+                    'nav-beyond': 'Beyond Code',
+                    'nav-cv': 'CV',
+                    'menu': 'Menu',
+                    'position': 'CS Undergraduate · Class of 2027<br/><img src="assets/images/hnu_badge.png" alt="Hunan University" class="inline-badge"/>Hunan University · Changsha, China',
+                    'bio-p1': 'I am an undergraduate student in Computer Science at Hunan University, working with <a href="https://changjianchen.github.io/" target="_blank" rel="noopener">Prof. Changjian Chen</a>. My research lies at the intersection of <strong>Visual Analytics</strong> and <strong>Human-Centered AI</strong>. I am interested in building and evaluating interactive systems that help people understand, evaluate, and steer AI for data analysis, with a particular focus on LLM- and agent-based workflows.',
+                    'bio-p2': 'Beyond research, I play Go (amateur 5-dan), ride bikes around Hunan, chase mountain light with a camera, and try to write code that ages well.',
+                    'edu-title': '<i class="fas fa-graduation-cap"></i> Education',
+                    'edu-school': 'Hunan University',
+                    'edu-major': 'Computer Science · Class of 2027',
+                    'edu-date': 'Sep. 2023 – Jun. 2027 (expected)',
+                    'honors-title': '<i class="fas fa-award"></i> Honors &amp; Awards',
+                    'award1': 'National Scholarship',
+                    'award2': 'China Collegiate Computing Contest · 2nd Prize',
+                    'award3': 'MCM/ICM · Honorable Mention',
+                    'pubs-title': '<i class="fas fa-star"></i> Publications',
+                    'pub-note': '(* <i>equal contribution</i>)',
+                    'pub-venue': '<i>Manuscript under review, 2026</i>',
+                    'pub-tldr': 'A visual analysis system that involves humans in generative time-series data augmentation: fact-based visualization for comparing original and generated samples, and constraint visualization to guide the generation process toward higher-quality data.',
+                    'beyond-title': '<i class="fas fa-coffee"></i> Beyond Code',
+                    'b1t': 'On Go · 围棋',
+                    'b1': 'Amateur 5-dan. Go taught me to think in shape and sequence — the best engineering decisions feel the same way.',
+                    'b2t': 'On Cycling',
+                    'b2': 'Road bike, long rides around Hunan. Kilometers make better debuggers than compilers.',
+                    'b3t': 'On Seeing',
+                    'b3': 'Landscape photography, mostly mountains — I chase the unusual angle, the edge of the frame.',
+                    'contact-loc': '<i class="fas fa-location-dot"></i> Changsha, China',
+                    'footer-updated': '<i>Last updated: Aug 2026</i>'
+                },
+                zh: {
+                    'brand': '<strong>邓广泽</strong>',
+                    'nav-about': '关于',
+                    'nav-pubs': '论文',
+                    'nav-beyond': '代码之外',
+                    'nav-cv': 'CV',
+                    'menu': '菜单',
+                    'position': '计算机科学与技术本科生 · 2027 届<br/><img src="assets/images/hnu_badge.png" alt="湖南大学" class="inline-badge"/>湖南大学 · 中国长沙',
+                    'bio-p1': '我是湖南大学计算机科学与技术专业的本科生，目前在 <a href="https://changjianchen.github.io/" target="_blank" rel="noopener">Prof. Changjian Chen</a> 的指导下开展研究。我的研究处于 <strong>Visual Analytics</strong> 与 <strong>Human-Centered AI</strong> 的交叉地带，致力于构建和评估交互式系统，帮助人们理解、评估并驾驭用于数据分析的 AI，尤其关注基于 LLM 与 Agent 的工作流。',
+                    'bio-p2': '科研之外，我下围棋（业余五段），在湖南各地骑行，背着相机追逐山间的光影，也努力写出经得起时间考验的代码。',
+                    'edu-title': '<i class="fas fa-graduation-cap"></i> 教育经历',
+                    'edu-school': '湖南大学',
+                    'edu-major': '计算机科学与技术 · 2027 届',
+                    'edu-date': '2023.9 – 2027.6（预计）',
+                    'honors-title': '<i class="fas fa-award"></i> 荣誉与奖项',
+                    'award1': '国家奖学金',
+                    'award2': '中国大学生计算机设计大赛 · 二等奖',
+                    'award3': '美国大学生数学建模竞赛 (MCM/ICM) · H 奖',
+                    'pubs-title': '<i class="fas fa-star"></i> 论文',
+                    'pub-note': '（* <i>共同一作</i>）',
+                    'pub-venue': '<i>在投稿件（Under Review），2026</i>',
+                    'pub-tldr': '一个将人类引入生成式时间序列数据增强过程的可视化分析系统：基于数据事实（data fact）的可视化帮助比较原始样本与生成样本，约束可视化则引导生成过程产出更高质量的数据。',
+                    'beyond-title': '<i class="fas fa-coffee"></i> 代码之外',
+                    'b1t': '围棋',
+                    'b1': '业余五段。围棋教会我以“形”与“序”思考——最好的工程决策亦如此。',
+                    'b2t': '骑行',
+                    'b2': '公路车，环湖南的长途骑行。公里数比编译器更擅长调试代码。',
+                    'b3t': '摄影',
+                    'b3': '风光摄影，偏爱山岳——我追逐不寻常的角度、画面边缘的风景。',
+                    'contact-loc': '<i class="fas fa-location-dot"></i> 中国长沙',
+                    'footer-updated': '<i>最近更新：2026 年 8 月</i>'
+                }
+            };
 
-  <!-- PULL QUOTE -->
-  <div class="pull-quote reveal">
-    <blockquote>
-      Good visualization is an act of translation — from data, into understanding.
-    </blockquote>
-  </div>
+            function applyLang(lang) {
+                document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                    var html = I18N[lang][el.getAttribute('data-i18n')];
+                    if (html !== undefined) el.innerHTML = html;
+                });
+                document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+                document.title = (lang === 'zh') ? '邓广泽 · Deng Guangze' : 'Deng Guangze · 邓广泽';
+                var meta = document.querySelector('meta[name="description"]');
+                if (meta) {
+                    meta.setAttribute('content', (lang === 'zh')
+                        ? '邓广泽 — 湖南大学计算机科学与技术专业本科生。研究方向：可视化分析与以人为本的人工智能。'
+                        : 'Deng Guangze — undergraduate student in Computer Science at Hunan University. Research at the intersection of Visual Analytics and Human-Centered AI.');
+                }
+                var btn = document.getElementById('lang-toggle');
+                if (btn) btn.textContent = (lang === 'zh') ? 'English' : '中文';
+                try { localStorage.setItem('lang', lang); } catch (e) {}
+            }
 
-  <!-- AWARDS -->
-  <section id="awards" class="reveal">
-    <div class="section-label">05 — Recognition</div>
-    <h2 class="section-title">A few <em>distinctions</em> along the way.</h2>
-    <ul class="awards-list">
-      <li class="award-row">
-        <span class="award-mark">i.</span>
-        <div>
-          <div class="award-name">National Scholarship · 国家奖学金</div>
-          <span class="award-sub">Ministry of Education — top 1% of students nationwide</span>
-        </div>
-        <div class="award-level gold">National · Top 1%</div>
-      </li>
-      <li class="award-row">
-        <span class="award-mark">ii.</span>
-        <div>
-          <div class="award-name">China Collegiate Computing Contest · 2nd Prize</div>
-          <span class="award-sub">中国大学生计算机设计大赛 — 中南赛区</span>
-        </div>
-        <div class="award-level">Regional · 2nd</div>
-      </li>
-      <li class="award-row">
-        <span class="award-mark">iii.</span>
-        <div>
-          <div class="award-name">MCM/ICM · Honorable Mention</div>
-          <span class="award-sub">美国大学生数学建模竞赛 — H Prize</span>
-        </div>
-        <div class="award-level">International · H</div>
-      </li>
-      <li class="award-row">
-        <span class="award-mark">iv.</span>
-        <div>
-          <div class="award-name">CUMCM · 3rd Prize (Provincial)</div>
-          <span class="award-sub">全国大学生数学建模竞赛 — 省级三等奖</span>
-        </div>
-        <div class="award-level">Provincial · 3rd</div>
-      </li>
-      <li class="award-row">
-        <span class="award-mark">v.</span>
-        <div>
-          <div class="award-name">CET-6 · 568</div>
-          <span class="award-sub">College English Test, Band Six</span>
-        </div>
-        <div class="award-level">Certification</div>
-      </li>
-    </ul>
-  </section>
+            document.getElementById('lang-toggle').addEventListener('click', function () {
+                var cur = (document.documentElement.lang === 'zh-CN') ? 'zh' : 'en';
+                applyLang(cur === 'zh' ? 'en' : 'zh');
+            });
 
-  <!-- BEYOND -->
-  <section id="beyond" class="reveal">
-    <div class="section-label">06 — Beyond Code</div>
-    <h2 class="section-title">Obsessions that keep me <em>grounded</em>.</h2>
-    <div class="beyond-grid">
-      <div class="beyond-card">
-        <h4>On Go · 围棋</h4>
-        <p>
-          Amateur 5-dan. Go taught me how to think in shape and sequence —
-          reading ten moves ahead, balancing territory against influence,
-          knowing when to attack and when to let a stone die. The best
-          engineering decisions feel the same way.
-        </p>
-        <div class="beyond-tags">业余五段 · Fuseki · Tesuji</div>
-      </div>
-      <div class="beyond-card">
-        <h4>On Cycling</h4>
-        <p>
-          Road bike, long rides around Hunan. Somewhere between the
-          cadence, the wind, and the gear I'm grinding, the code I've
-          been stuck on for a week tends to unstick itself. Kilometers
-          make better debuggers than compilers.
-        </p>
-        <div class="beyond-tags">Road · Cadence · Climbs</div>
-      </div>
-      <div class="beyond-card">
-        <h4>On Seeing</h4>
-        <p>
-          Landscape photography, mostly mountains. I've wandered a lot 
-          around China.My eye tends toward the unusual angle, 
-          the edge of the frame, what almost wasn't there.
-        </p>
-        <div class="beyond-tags">Yunnan · Peaks · Shorelines</div>
-      </div>
-      <div class="beyond-card">
-        <h4>On Coffee</h4>
-        <p>
-          Pour-over most mornings. Moka pot when I want something darker;
-          French press when I want to think slowly. The variables — grind,
-          temperature, time — turn out to be surprisingly similar to debugging.
-        </p>
-        <div class="beyond-tags">V60 · Moka · French Press</div>
-      </div>
-      <div class="beyond-card">
-        <h4>On Whisky</h4>
-        <p>
-          Mostly Scotch and Japanese. I'm drawn to the briny smoke of
-          Talisker, the understated balance of Hibiki, the patience in
-          a good Yamazaki. A glass is a small appointment with attention.
-        </p>
-        <div class="beyond-tags">Talisker · Hibiki · Yamazaki</div>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<!-- CONTACT -->
-<div class="wrap">
-  <section id="contact" class="contact reveal">
-    <h2>Say <em>hello</em>.</h2>
-    <p>Open to research collaborations, internships, and interesting conversations.</p>
-    <div class="contact-links">
-      <a href="mailto:2908251804@qq.com" class="btn primary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        2908251804@qq.com
-      </a>
-      <a href="tel:+8617721501870" class="btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        Call
-      </a>
-    </div>
-  </section>
-</div>
-
-<footer>
-  <div class="wrap">
-    <div class="mark-footer">Guangze.</div>
-    <div style="margin-top: 8px;">© 2026 · Built in Changsha · Last updated April</div>
-  </div>
-</footer>
-
-<script>
-  // Nav blur border
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 20);
-  });
-
-  // Reveal on scroll
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // === Daily Rhythm widget: 24-hour activity curve with live time cursor ===
-  // Shows where "now" (CST) sits on a typical daily activity pattern —
-  // a real-time slice of the same time-series research this page is about.
-  (function dailyRhythm(){
-    const canvas = document.getElementById('signal-canvas');
-    if (!canvas) return;
-    const valueEl = document.getElementById('signal-value');
-    const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-    let W, H;
-
-    function resize(){
-      const r = canvas.getBoundingClientRect();
-      W = r.width; H = r.height;
-      canvas.width = W * dpr; canvas.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const css = getComputedStyle(document.documentElement);
-    const amber = css.getPropertyValue('--amber').trim() || '#a86a22';
-    const line  = css.getPropertyValue('--line').trim()  || '#e6dfd2';
-    const faint = css.getPropertyValue('--ink-faint').trim() || '#9a8f80';
-
-    // Typical 24-hour activity curve (same pattern as Lab section — hourly rhythm)
-    const rhythm = [0.12,0.08,0.06,0.05,0.08,0.18,0.38,0.72,0.88,0.70,0.58,0.62,
-                    0.68,0.65,0.60,0.66,0.78,0.92,0.72,0.52,0.40,0.30,0.22,0.15];
-
-    function lerp(a, b, t){ return a + (b - a) * t; }
-
-    function activityAt(hf){
-      const h = Math.floor(hf) % 24;
-      return lerp(rhythm[h], rhythm[(h + 1) % 24], hf - Math.floor(hf));
-    }
-
-    function toPx(hf, v){
-      const px = 6, py = 10;
-      const x = px + (hf / 24) * (W - px * 2);
-      const y = py + (1 - v) * (H - py * 2);
-      return [x, y];
-    }
-
-    function nowFrac(){
-      const n = new Date();
-      return n.getHours() + n.getMinutes() / 60 + n.getSeconds() / 3600;
-    }
-
-    function frame(){
-      ctx.clearRect(0, 0, W, H);
-      const px = 6, py = 10;
-
-      // Filled area under curve
-      const grad = ctx.createLinearGradient(0, 0, 0, H);
-      grad.addColorStop(0, 'rgba(168,106,34,0.16)');
-      grad.addColorStop(1, 'rgba(168,106,34,0.01)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.moveTo(px, H - py);
-      for (let i = 0; i <= 300; i++){
-        const hf = i / 300 * 24;
-        const [x, y] = toPx(hf, activityAt(hf));
-        ctx.lineTo(x, y);
-      }
-      ctx.lineTo(W - px, H - py);
-      ctx.closePath();
-      ctx.fill();
-
-      // Curve line
-      ctx.strokeStyle = amber;
-      ctx.lineWidth = 1.5;
-      ctx.globalAlpha = 0.55;
-      ctx.beginPath();
-      for (let i = 0; i <= 300; i++){
-        const hf = i / 300 * 24;
-        const [x, y] = toPx(hf, activityAt(hf));
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-
-      // Past portion: brighter line up to current time
-      const nf = nowFrac();
-      ctx.strokeStyle = amber;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      const steps = Math.ceil(nf / 24 * 300);
-      for (let i = 0; i <= steps; i++){
-        const hf = i / 300 * 24;
-        const [x, y] = toPx(hf, activityAt(hf));
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Vertical cursor at current time
-      const [cx, cy] = toPx(nf, activityAt(nf));
-      ctx.strokeStyle = amber;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.3;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.moveTo(cx, py); ctx.lineTo(cx, H - py);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.globalAlpha = 1;
-
-      // Glow halo
-      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 12);
-      grd.addColorStop(0, 'rgba(168,106,34,0.35)');
-      grd.addColorStop(1, 'rgba(168,106,34,0)');
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 12, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Live dot
-      ctx.fillStyle = amber;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Current time label
-      const n = new Date();
-      const hh = String(n.getHours()).padStart(2, '0');
-      const mm = String(n.getMinutes()).padStart(2, '0');
-      if (valueEl) valueEl.textContent = hh + ':' + mm + ' CST';
-
-      requestAnimationFrame(frame);
-    }
-    frame();
-  })();
-
-  // === Lab: TimeShaper demo — data-fact constraints on hourly traffic volume ===
-  (function timeShaperLab(){
-    const canvas = document.getElementById('aug-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-    let W, H;
-
-    const css = getComputedStyle(document.documentElement);
-    const amber  = css.getPropertyValue('--amber').trim()      || '#a86a22';
-    const dim    = css.getPropertyValue('--ink-dim').trim()    || '#5a5048';
-    const faint  = css.getPropertyValue('--ink-faint').trim()  || '#9a8f80';
-    const line   = css.getPropertyValue('--line').trim()       || '#e6dfd2';
-    const copper = css.getPropertyValue('--copper').trim()     || '#a84d2a';
-
-    // Hand-crafted hourly traffic pattern, normalized to ~[0,1]
-    const base = [0.12,0.08,0.06,0.05,0.08,0.18,0.38,0.72,0.88,0.70,0.58,0.62,
-                  0.68,0.65,0.60,0.66,0.78,0.92,0.72,0.52,0.40,0.30,0.22,0.15];
-    const N = base.length;
-    const isNight = i => i < 6 || i > 20;
-    const isDay   = i => i >= 7 && i <= 18;
-
-    // "Unconstrained" generated sample — noisy, night-inflated, occasionally spiky.
-    let raw;
-    function regen() {
-      raw = base.map((v, i) => {
-        let out = v + (Math.random() - 0.5) * 0.28;
-        if (isNight(i))        out += 0.22 + Math.random() * 0.22;   // flips rank
-        if (i >= 9 && i <= 16) out -= Math.random() * 0.18;          // daytime dip
-        if (Math.random() < 0.07) out += (Math.random() - 0.3) * 1.5; // extreme
-        return out;
-      });
-    }
-    regen();
-
-    const cAgg  = document.getElementById('c-agg');
-    const cRank = document.getElementById('c-rank');
-    const cExt  = document.getElementById('c-ext');
-    const btnResample = document.getElementById('resample');
-    const btnAll      = document.getElementById('apply-all');
-    const mOOS  = document.getElementById('m-oos');
-    const mRank = document.getElementById('m-rank');
-    const mDist = document.getElementById('m-dist');
-
-    function applyConstraints() {
-      let g = raw.slice();
-
-      // Extreme: damp point-wise outliers toward neighbor average
-      if (cExt.checked) {
-        for (let i = 0; i < N; i++) {
-          const prev = g[(i - 1 + N) % N];
-          const next = g[(i + 1) % N];
-          const avg = (prev + next) / 2;
-          if (Math.abs(g[i] - avg) > 0.32) g[i] = avg + (g[i] - avg) * 0.25;
-        }
-      }
-      // Rank: push night below a cap, day above a floor
-      if (cRank.checked) {
-        for (let i = 0; i < N; i++) {
-          if (isNight(i)) {
-            const cap = 0.28 + Math.random() * 0.05;
-            if (g[i] > cap) g[i] = cap - (g[i] - cap) * 0.3 + (Math.random() - 0.5) * 0.04;
-          } else if (isDay(i)) {
-            const floor = 0.45 + Math.random() * 0.08;
-            if (g[i] < floor) g[i] = floor + (floor - g[i]) * 0.3 + (Math.random() - 0.5) * 0.04;
-          }
-        }
-      }
-      // Aggregation: clamp to [0,1]
-      if (cAgg.checked) g = g.map(v => Math.max(0, Math.min(1, v)));
-      return g;
-    }
-
-    function computeMetrics(gen) {
-      const oos = gen.filter(v => v < 0 || v > 1).length / N * 100;
-      const nightMax = Math.max(...gen.slice(0, 6), ...gen.slice(21));
-      const day = gen.slice(7, 19);
-      const rankViol = day.filter(v => v < nightMax).length / day.length * 100;
-      let sse = 0;
-      for (let i = 0; i < N; i++) sse += (gen[i] - base[i]) ** 2;
-      const dist = Math.sqrt(sse / N);
-      return { oos, rank: rankViol, dist };
-    }
-
-    // Plot helpers
-    const padX = 40, padY = 26;
-    const yMin = -0.35, yMax = 1.35;
-    function toPx(i, v) {
-      const plotW = W - padX - 18;
-      const plotH = H - padY * 2;
-      const x = padX + (i / (N - 1)) * plotW;
-      const y = padY + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
-      return [x, y];
-    }
-
-    function drawGrid() {
-      const plotW = W - padX - 18;
-      const plotH = H - padY * 2;
-      ctx.strokeStyle = line;
-      ctx.lineWidth = 1;
-      // solid lines at 0 and 1
-      ctx.globalAlpha = 0.6;
-      ctx.beginPath();
-      [0, 1].forEach(v => {
-        const y = padY + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
-        ctx.moveTo(padX, y); ctx.lineTo(W - 18, y);
-      });
-      ctx.stroke();
-      // dashed midline
-      ctx.setLineDash([2, 4]);
-      ctx.globalAlpha = 0.4;
-      ctx.beginPath();
-      {
-        const y = padY + plotH - ((0.5 - yMin) / (yMax - yMin)) * plotH;
-        ctx.moveTo(padX, y); ctx.lineTo(W - 18, y);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.globalAlpha = 1;
-
-      // Day/night band
-      ctx.fillStyle = 'rgba(168,106,34,0.04)';
-      const [x1] = toPx(7, 0);
-      const [x2] = toPx(18, 0);
-      ctx.fillRect(x1, padY, x2 - x1, plotH);
-
-      // Labels
-      ctx.fillStyle = faint;
-      ctx.font = "10px 'JetBrains Mono', monospace";
-      [[0, '0'], [1, '1']].forEach(([v, t]) => {
-        const y = padY + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
-        ctx.fillText(t, padX - 14, y + 3);
-      });
-      [0, 6, 12, 18, 23].forEach(h => {
-        const x = padX + (h / (N - 1)) * plotW;
-        const lbl = String(h).padStart(2, '0') + 'h';
-        ctx.fillText(lbl, x - 9, H - 8);
-      });
-
-      // Band label
-      ctx.fillStyle = amber;
-      ctx.font = "9px 'JetBrains Mono', monospace";
-      ctx.fillText('DAY', (x1 + x2) / 2 - 10, padY + 10);
-    }
-
-    function plotLine(series, color, width, alpha, dashed) {
-      ctx.strokeStyle = color;
-      ctx.globalAlpha = alpha;
-      ctx.lineWidth = width;
-      ctx.setLineDash(dashed ? [5, 4] : []);
-      ctx.beginPath();
-      for (let i = 0; i < series.length; i++) {
-        const [x, y] = toPx(i, series[i]);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.globalAlpha = 1;
-    }
-
-    function plotDots(series, color, r) {
-      ctx.fillStyle = color;
-      for (let i = 0; i < series.length; i++) {
-        const [x, y] = toPx(i, series[i]);
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    function markViolations(gen) {
-      ctx.save();
-      for (let i = 0; i < N; i++) {
-        if (gen[i] < 0 || gen[i] > 1) {
-          const [x, y] = toPx(i, gen[i]);
-          ctx.fillStyle = copper;
-          ctx.beginPath();
-          ctx.arc(x, y, 3, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.strokeStyle = copper;
-          ctx.lineWidth = 1.2;
-          ctx.globalAlpha = 0.55;
-          ctx.beginPath();
-          ctx.arc(x, y, 7, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.globalAlpha = 1;
-        }
-      }
-      ctx.restore();
-    }
-
-    function setMetric(el, text, good) {
-      el.textContent = text;
-      el.classList.remove('good', 'bad');
-      if (good === true)  el.classList.add('good');
-      if (good === false) el.classList.add('bad');
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      drawGrid();
-      const gen = applyConstraints();
-
-      plotLine(base, dim,   1.6, 0.55, true);
-      plotLine(gen,  amber, 2.1, 1,    false);
-      plotDots(gen,  amber, 2.4);
-      markViolations(gen);
-
-      const m = computeMetrics(gen);
-      setMetric(mOOS,  Math.round(m.oos) + '%',         m.oos === 0 ? true : m.oos > 8 ? false : null);
-      setMetric(mRank, Math.round(m.rank) + '%',        m.rank < 10 ? true : m.rank > 35 ? false : null);
-      setMetric(mDist, m.dist.toFixed(3),               m.dist < 0.15 ? true : m.dist > 0.30 ? false : null);
-    }
-
-    function resize() {
-      const r = canvas.getBoundingClientRect();
-      W = r.width; H = r.height;
-      canvas.width = W * dpr; canvas.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw();
-    }
-
-    [cAgg, cRank, cExt].forEach(el => el.addEventListener('change', draw));
-    btnResample.addEventListener('click', () => { regen(); draw(); });
-    btnAll.addEventListener('click', () => {
-      const allOn = cAgg.checked && cRank.checked && cExt.checked;
-      cAgg.checked = cRank.checked = cExt.checked = !allOn;
-      btnAll.textContent = allOn ? 'Apply all' : 'Clear all';
-      draw();
-    });
-
-    window.addEventListener('resize', resize);
-    resize();
-  })();
-</script>
+            var saved = 'en';
+            try { saved = localStorage.getItem('lang') || 'en'; } catch (e) {}
+            applyLang(saved);
+        })();
+    </script>
 
 </body>
 </html>
